@@ -2,12 +2,18 @@ import 'dart:math';
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import '../api/api_response.dart';
 import '../models/message.dart';
 import '../models/conversation.dart';
 import '../api/services/chat_service.dart';
 import '../api/services/google_ai_service.dart';
 import '../api/services/conversation_service.dart';
 import 'auth_controller.dart';
+
+enum AIModel {
+  gemini,
+  chatGPT
+}
 
 class ChatController extends GetxController {
   final ChatService _chatService = ChatService();
@@ -23,6 +29,9 @@ class ChatController extends GetxController {
   final RxBool isProcessing = false.obs;
   final RxBool isFirstLoad = true.obs;
   final RxBool isLoadingConversations = false.obs;
+
+  // Model selection
+  final Rx<AIModel> selectedModel = AIModel.gemini.obs;
 
   @override
   void onInit() {
@@ -229,6 +238,7 @@ class ChatController extends GetxController {
       await createNewConversation();
     }
 
+
     isProcessing.value = true;
 
     try {
@@ -244,21 +254,36 @@ class ChatController extends GetxController {
       // Add to UI immediately
       messages.add(userMessage);
 
-      // Process with Google AI
+      // Get user and conversation IDs
       final userId = _authController.currentUser.value!.id;
       final conversationId = currentConversation.value!.id;
 
-      final response = await _googleAiService.processChatMessage(
-        userId: userId,
-        conversationId: conversationId,
-        message: content,
-      );
+      // Process with selected AI model
+      late ApiResponse response;
+
+      if (selectedModel.value == AIModel.gemini) {
+        // Use Gemini API
+        response = await _googleAiService.processChatMessage(
+          userId: userId,
+          conversationId: conversationId,
+          message: content,
+        );
+      } else {
+        // Use ChatGPT API
+        response = await _chatService.sendChatGPTMessage(
+          userId: userId,
+          conversationId: conversationId,
+          message: content,
+        );
+      }
 
       if (response.success && response.data != null) {
         final data = response.data as Map<String, dynamic>;
 
-        // Extract AI response
-        final rawResponse = data['response'] ?? data['message'] ?? data["aiResponse"]["message"];
+        // Extract AI response - handle different response formats from different APIs
+        String rawResponse;
+        if (true) {
+          rawResponse = data['response'] ?? data['message'] ?? data["aiResponse"]["message"];
 
         // Convert the message to formatted text (handling code blocks, bold, links)
         final formattedResponse = _formatMessageContent(rawResponse);
@@ -303,11 +328,11 @@ class ChatController extends GetxController {
             currentConversation.value = updatedConversation;
           }
         }
-      } else {
+      }} else {
         // Add error message
         final errorMessage = Message(
           id: DateTime.now().millisecondsSinceEpoch.toString() + '1',
-          content: 'Error: Failed to get response from AI',
+          content: 'Error: Failed to get response from AI'+response.data.toString(),
           sender: 'assistant',
           timestamp: DateTime.now(),
           conversationId: conversationId,

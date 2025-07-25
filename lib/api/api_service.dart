@@ -14,6 +14,7 @@ class ApiService {
     T Function(dynamic)? fromJson,
   }) async {
     try {
+      print("Request:"+data.toString());
       final response = await _dio.request(
         path,
         data: data,
@@ -36,6 +37,7 @@ class ApiService {
           message: response.statusMessage,
         );
       } else {
+
         return ApiResponse.error(
           message: response.data is Map ? response.data['message'] : 'Request failed',
           statusCode: response.statusCode,

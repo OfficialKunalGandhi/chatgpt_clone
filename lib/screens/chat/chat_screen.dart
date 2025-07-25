@@ -25,6 +25,32 @@ class ChatScreen extends StatelessWidget {
         ),
         iconTheme: IconThemeData(color: Colors.black),
         actions: [
+          // Model selection dropdown
+          Obx(() => DropdownButton<AIModel>(
+            value: chatController.selectedModel.value,
+            onChanged: (AIModel? newValue) {
+              if (newValue != null) {
+                chatController.selectedModel.value = newValue;
+              }
+            },
+            items: AIModel.values.map<DropdownMenuItem<AIModel>>((AIModel model) {
+              return DropdownMenuItem<AIModel>(
+                value: model,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    model == AIModel.gemini ? 'Gemini' : 'ChatGPT',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+            icon: Icon(Icons.model_training, color: Colors.black87),
+            underline: Container(height: 0),
+          )),
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.black),
             onPressed: () => chatController.clearCurrentChat(),
