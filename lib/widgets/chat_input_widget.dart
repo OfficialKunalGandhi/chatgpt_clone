@@ -54,9 +54,9 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
-        color: Colors.grey[800],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(24.0),
-        border: Border.all(color: Colors.grey[700]!),
+        border: Border.all(color: Colors.black),
       ),
       child: Row(
         children: [
@@ -66,12 +66,12 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
               controller: _textController,
               focusNode: _focusNode,
               enabled: !widget.isProcessing.value,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 hintText: widget.isProcessing.value
                     ? 'Waiting for response...'
                     : 'Ask me anything...',
-                hintStyle: TextStyle(color: Colors.grey[500]),
+                hintStyle: TextStyle(color: Colors.black),
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
@@ -90,11 +90,17 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
 
           // Send button
           Obx(() => IconButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.black),
+              shape: MaterialStateProperty.all(CircleBorder()),
+            ),
             icon: Icon(
-              Icons.send_rounded,
+
+              Icons.arrow_upward,
+              size: 18,
               color: hasText.value && !widget.isProcessing.value
                   ? Colors.tealAccent
-                  : Colors.grey[600],
+                  : Colors.white,
             ),
             onPressed: (hasText.value && !widget.isProcessing.value)
                 ? _handleSubmitted

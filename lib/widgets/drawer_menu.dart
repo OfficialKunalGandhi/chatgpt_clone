@@ -30,72 +30,73 @@ class _DrawerMenuState extends State<DrawerMenu> {
       child: Column(
         children: [
           // Drawer header with user info
-         DrawerHeader(child:Column(
-         children: [
-           ListTile(
-             leading: const Icon(Icons.add_circle_outline, color: Colors.blue),
-             title: const Text(
-               'New Chat',
-               style: TextStyle(color: Colors.black87),
-             ),
-             onTap: () {
-               chatController.createNewConversation();
-               Navigator.pop(context); // Close drawer
-             },
-           ),
-
-           // Chats option
-           ListTile(
-             leading: const Icon(Icons.chat_bubble_outline, color: Colors.blue),
-             title: const Text(
-               'Chats',
-               style: TextStyle(color: Colors.black87),
-             ),
-             onTap: () {
-               Navigator.pop(context); // Close drawer
-               // Navigate to chats screen or simply stay on current screen
-               // as we're already in the chat section
-             },
-           ),
-
-           // Library option
-           ListTile(
-             leading: const Icon(Icons.book_outlined, color: Colors.blue),
-             title: const Text(
-               'Library',
-               style: TextStyle(color: Colors.black87),
-             ),
-             onTap: () {
-               Navigator.pop(context); // Close drawer
-               // TODO: Navigate to library screen
-               Get.snackbar(
-                 'Coming Soon',
-                 'Library feature will be available soon!',
-                 snackPosition: SnackPosition.BOTTOM,
-               );
-             },
-           ),
-
-           // Explore GPTs option
-           ListTile(
-             leading: const Icon(Icons.explore_outlined, color: Colors.blue),
-             title: const Text(
-               'Explore GPTs',
-               style: TextStyle(color: Colors.black87),
-             ),
-             onTap: () {
-               Navigator.pop(context); // Close drawer
-               // TODO: Navigate to explore GPTs screen
-               Get.snackbar(
-                 'Coming Soon',
-                 'Explore GPTs feature will be available soon!',
-                 snackPosition: SnackPosition.BOTTOM,
-               );
-             },
-           ),
-         ]
-         )
+          SizedBox(
+      height: 50,),
+         Column(
+                  children: [
+                    ListTile(
+         leading: const Icon(Icons.add_circle_outline, color: Colors.black),
+         title: const Text(
+           'New Chat',
+           style: TextStyle(color: Colors.black87),
          ),
+         onTap: () {
+           chatController.createNewConversation();
+           Navigator.pop(context); // Close drawer
+         },
+                    ),
+
+                    // Chats option
+                    ListTile(
+         leading: const Icon(Icons.chat_bubble_outline, color: Colors.black),
+         title: const Text(
+           'Chats',
+           style: TextStyle(color: Colors.black87),
+         ),
+         onTap: () {
+           Navigator.pop(context); // Close drawer
+           // Navigate to chats screen or simply stay on current screen
+           // as we're already in the chat section
+         },
+                    ),
+
+                    // Library option
+                    ListTile(
+         leading: const Icon(Icons.book_outlined, color: Colors.black),
+         title: const Text(
+           'Library',
+           style: TextStyle(color: Colors.black87),
+         ),
+         onTap: () {
+           Navigator.pop(context); // Close drawer
+           // TODO: Navigate to library screen
+           Get.snackbar(
+             'Coming Soon',
+             'Library feature will be available soon!',
+             snackPosition: SnackPosition.BOTTOM,
+           );
+         },
+                    ),
+
+                    // Explore GPTs option
+                    ListTile(
+         leading: const Icon(Icons.explore_outlined, color: Colors.black),
+         title: const Text(
+           'Explore GPTs',
+           style: TextStyle(color: Colors.black87),
+         ),
+         onTap: () {
+           Navigator.pop(context); // Close drawer
+           // TODO: Navigate to explore GPTs screen
+           Get.snackbar(
+             'Coming Soon',
+             'Explore GPTs feature will be available soon!',
+             snackPosition: SnackPosition.BOTTOM,
+           );
+         },
+                    ),
+                  ]
+                  ),
           // New chat button
 
 
@@ -130,6 +131,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                       );
                     } else {
                       return ListView.builder(
+                        padding: EdgeInsets.zero,
                         itemCount: chatController.conversations.length,
                         itemBuilder: (context, index) {
                           final conversation = chatController.conversations[index];

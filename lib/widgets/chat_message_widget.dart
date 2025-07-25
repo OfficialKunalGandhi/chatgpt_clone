@@ -30,14 +30,22 @@ class ChatMessageWidget extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12.0),
                   decoration: BoxDecoration(
-                    color: isUser ? Colors.blue.shade100 : Colors.grey.shade200,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: isUser
                       ? Text(
                           message.content,
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 15,
                           ),
                         )
